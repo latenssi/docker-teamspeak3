@@ -1,2 +1,2 @@
 # docker-teamspeak3
-Minimal dockerized Teamspeak 3
+Dockerized Teamspeak 3
