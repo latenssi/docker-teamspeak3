@@ -8,10 +8,14 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ADD ${TEAMSPEAK_URL} /tmp/teamspeak3-server.tar.bz2
 
-RUN tar --directory /opt/ -xvjf /tmp/teamspeak3-server.tar.bz2 && \
-    rm /tmp/teamspeak3-server.tar.bz2 && \
-    mkdir -p /data/logs && \
-    ln -s /data/ts3server.sqlitedb /opt/teamspeak3-server_linux_amd64/ts3server.sqlitedb
+RUN apt-get update -q \
+    && apt-get install -qy bzip2 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt \
+    && tar --directory /opt/ -xvjf /tmp/teamspeak3-server.tar.bz2 \
+    && rm /tmp/teamspeak3-server.tar.bz2 \
+    && mkdir -p /data/logs \
+    && ln -s /data/ts3server.sqlitedb /opt/teamspeak3-server_linux_amd64/ts3server.sqlitedb
 
 RUN useradd -u ${TS3_UID} ts3 \
     && chown -R ts3 /opt/teamspeak3-server_linux_amd64 \
