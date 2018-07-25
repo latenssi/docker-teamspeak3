@@ -3,7 +3,16 @@ FROM ubuntu:16.04
 ENV TS3_UID 1000
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && apt-get install -y curl bzip2 && apt-get clean && rm -rf /var/lib/apt/lists
+RUN apt-get update && \
+    apt-get install -y curl bzip2 locales && \
+    apt-get clean && rm -rf /var/lib/apt/lists
+
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=en_US.UTF-8
+
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
 
 ENV TEAMSPEAK_VERSION 3.2.0
 ENV TEAMSPEAK_URL http://dl.4players.de/ts/releases/${TEAMSPEAK_VERSION}/teamspeak3-server_linux_amd64-${TEAMSPEAK_VERSION}.tar.bz2
